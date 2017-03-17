@@ -59,17 +59,21 @@ public class UserController {
     }
 
     @GetMapping("/addUser")
-    public Map<String, Object> addUser(String name, int age) {
-        //UserRepository users =  new UserRepository();
-        /*UserRepository users = new UserRepository();
-        users.setName(name);
-        users.setAge(age);
-        repository.save(users);*/
-        Map<String, Object> result = new HashMap<>();
-        result.put("errorCode", 0);
-        result.put("errorMsg", "success");
-        result.put("data", "");
-        return result;
+    public AddUserResp addUser(Users users) {
+        AddUserResp resp = new AddUserResp();
+        try {
+            repository.save(users);
+        } catch (Exception e) {
+            resp.setErrorCode(-1L);
+            resp.setErrorMsg("fail");
+            return resp;
+        }
+
+        resp.setErrorCode(0L);
+        resp.setErrorMsg("success");
+        resp.setData(users);
+        resp.setCount(1);
+        return resp;
     }
 
 }
